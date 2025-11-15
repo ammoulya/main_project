@@ -1,0 +1,34 @@
+clone_repositories_task:
+  description: >
+    Clone all repositories from the specified GitHub account {github_account}
+    to the local directory {destination_folder}. Handle both public and private
+    repositories securely using the provided GitHub token.
+  expected_output: >
+    All repositories from {github_account} successfully cloned to {destination_folder}.
+    Provide a summary list of cloned repositories with their names and status.
+  agent: github_manager
+
+clone_single_repo_task:
+  description: >
+    Clone a specific GitHub repository provided via URL {repo_url} into the folder {destination_folder}.
+  expected_output: >
+    Repository {repo_url} cloned successfully into {destination_folder}.
+  agent: github_manager
+  
+extract_dependencies_task:
+  description: >
+    Extract dependencies from the cloned repository located at {target_repo_path}.
+  expected_output: >
+    CSV report of all dependencies from {target_repo_path} saved as all_dependencies_with_paths.csv.
+  agent: dependency_agent
+
+extract_imports_task:
+  description: >
+    Analyze each Python file in the repository located at {target_repo_path} using AST.
+    Extract all imports, symbols/functions used, and line numbers, then output the results to a PDF report.
+  expected_output: >
+    A well-structured PDF report for repository at {target_repo_path}, listing:
+    - Imported modules (e.g., os, sys)
+    - Used functions or attributes (e.g., os.makedirs)
+    - Line numbers of each usage
+  agent: python_ast_parser
